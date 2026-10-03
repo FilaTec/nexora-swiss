@@ -1,5 +1,6 @@
 "use client";
 import {useState} from "react";
+import {useRouter} from "next/navigation";
 
 type Lang="en"|"de"|"ti";
 const copy={
@@ -9,12 +10,12 @@ const copy={
 };
 const icons=["📄","💼","✉️","🇨🇭","🗣️","🎤","🏠","🧭"];
 export default function Home(){
- const [lang,setLang]=useState<Lang>("en"); const t=copy[lang];
+ const [lang,setLang]=useState<Lang>("en"); const t=copy[lang]; const router=useRouter();
  const cards=[[t.cv,t.cvd],[t.jobs,t.jobsd],[t.docs,t.docsd],[t.tax,t.taxd],[t.learn,t.learnd],[t.interview,t.interviewd],[t.housing,t.housingd],[t.swiss,t.swissd]];
  return <main>
   <nav><div className="brand"><span>N</span>Nexora Swiss</div><div className="langs">{(["de","en","ti"] as Lang[]).map(l=><button className={lang===l?"active":""} onClick={()=>setLang(l)} key={l}>{l==="de"?"DE":l==="en"?"EN":"ትግ"}</button>)}</div></nav>
   <section className="hero"><div className="pill">✦ AI-powered · Switzerland</div><h1>{t.hello}</h1><p>{t.sub}</p><div className="assistant"><div className="orb">N</div><div><strong>{t.ask}</strong><small>CV · Jobs · Documents · Tax · Language</small></div><button>→</button></div></section>
-  <section className="services"><div className="sectionTitle"><h2>{t.ask}</h2><span>8 services</span></div><div className="grid">{cards.map((c,i)=><article key={c[0]}><div className="icon">{icons[i]}</div><div><h3>{c[0]}</h3><p>{c[1]}</p></div><b>↗</b></article>)}</div></section>
+  <section className="services"><div className="sectionTitle"><h2>{t.ask}</h2><span>8 services</span></div><div className="grid">{cards.map((c,i)=><article key={c[0]} onClick={()=>i===0&&router.push("/cv")} className={i===0?"ready":""}><div className="icon">{icons[i]}</div><div><h3>{c[0]}</h3><p>{c[1]}</p></div><b>↗</b></article>)}</div></section>
   <footer><div><strong>Nexora Swiss</strong><span>Built for a confident start in Switzerland.</span></div><span className="dev">Development preview · v0.1</span></footer>
  </main>
 }
